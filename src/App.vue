@@ -11,7 +11,12 @@
                     <label>Mail</label>
                     <input class="form-control" type="text" v-model="user.email">
             </div>
-            <button class="btn btn-primary" @click="submit">Submit</button>
+            <button class="btn btn-primary" @click="submit">Submit</button> <br><br>
+            <button class="btn btn-primary" @click="fetchData">Get Data</button>
+            <hr>
+            <ul class="list-group">
+                <li class="list-item-group" v-for="u in users" :key="u">{{ u.username }} - {{ u.email }}</li>
+                </ul>
         </div>
         </div>
     </div>
@@ -24,16 +29,30 @@
                 user: {
                     username: '',
                     email: ''
-                }
+                },
+                users: []
             };
         },
         methods: {
             submit(){
-                this.$http.post('https://vuejs-http-69610.firebaseio.com/data.json',this.user)
+                this.$http.post('',this.user)
                 .then(response => {
                     console.log(response);
                 }, error => {
                     console.log(error); 
+                });
+            },
+            fetchData(){
+                this.$http.get('')
+                .then(response => {
+                  return response.json();
+                })
+                .then(data => {
+                    const resultArray=[];
+                    for(let key in data){          //Key is the unique scripts and the objects are value
+                        resultArray.push(data[key]);
+                    }
+                    this.users = resultArray;
                 });
             }
         }
